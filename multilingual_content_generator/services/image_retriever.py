@@ -4,7 +4,11 @@ from multilingual_content_generator.config import Config
 
 def fetch_images(query, num_results=5):
     """
-    Busca imágenes relevantes en Pixabay utilizando una consulta textual.
+    Este archivo está diseñado para buscar y recuperar imágenes existentes desde una 
+    fuente externa, como Pixabay o Unsplash.
+
+    Las imágenes no son generadas por inteligencia artificial (IA), sino que provienen 
+    de bases de datos de imágenes preexistentes.
 
     Args:
         query (str): Palabra clave o tema para buscar imágenes.
