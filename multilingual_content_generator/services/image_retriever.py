@@ -4,18 +4,12 @@ from multilingual_content_generator.config import Config
 
 def fetch_images(query, num_results=5):
     """
-    Este archivo está diseñado para buscar y recuperar imágenes existentes desde una 
-    fuente externa, como Pixabay o Unsplash.
-
-    Las imágenes no son generadas por inteligencia artificial (IA), sino que provienen 
-    de bases de datos de imágenes preexistentes.
-
+    Busca imágenes en Pixabay.
     Args:
-        query (str): Palabra clave o tema para buscar imágenes.
-        num_results (int): Número máximo de resultados a devolver.
-
+        query (str): Término de búsqueda.
+        num_results (int): Número de resultados deseados.
     Returns:
-        list: Lista de URLs de imágenes encontradas.
+        list: Lista de URLs de imágenes.
     """
     # Construir la URL de la solicitud a la API de Pixabay
     url = f"https://pixabay.com/api/?key={Config.PIXABAY_API_KEY}&q={query}&image_type=photo&per_page={num_results}"
