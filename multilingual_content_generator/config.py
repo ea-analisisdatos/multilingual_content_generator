@@ -7,6 +7,8 @@ load_dotenv()
 class Config:
     """
     Clase que almacena la configuración global del proyecto.
+    Nota: Si alguna clave no está presente en .env, la aplicación 
+    usará el valor por defecto especificado en el código.
     """
     # Clave de la API de Pixabay (recuperada desde las variables de entorno)
     PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY", "tu_clave_pixabay")
