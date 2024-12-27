@@ -3,7 +3,6 @@
 import pytest
 from multilingual_content_generator.services.multilingual_generator import generate_and_translate
 
-
 @pytest.mark.timeout(10)
 def test_multilingual_content(monkeypatch):
     """
@@ -21,13 +20,14 @@ def test_multilingual_content(monkeypatch):
             return [{"translation_text": "Este es un texto generado."}]
 
     def mock_pipeline(task, *args, **kwargs):
+        print(f"Mock pipeline invoked with task: {task}")  # Depuración
         if task == "text-generation":
             return MockContentGenerator()
         elif task == "translation":
             return MockTranslator()
 
     # Reemplazar los pipelines con mocks
-    monkeypatch.setattr("transformers.pipeline", mock_pipeline)
+    monkeypatch.setattr("multilingual_content_generator.services.multilingual_generator.pipeline", mock_pipeline)
 
     # Prueba: Generación y traducción
     result = generate_and_translate("Test prompt", source_lang="en", target_lang="es", max_length=50)

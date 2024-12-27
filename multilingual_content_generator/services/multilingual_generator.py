@@ -2,6 +2,7 @@
 
 from transformers import pipeline
 
+
 def generate_and_translate(prompt, source_lang="en", target_lang="es", max_length=50):
     """
     Genera contenido en un idioma y lo traduce a otro.
