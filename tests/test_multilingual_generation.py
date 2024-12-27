@@ -1,7 +1,8 @@
 # Archivo: tests/test_multilingual_generation.py
 
 import pytest
-from multilingual_content_generator.services.multilingual_generation import generate_and_translate
+from multilingual_content_generator.services.multilingual_generator import generate_and_translate
+
 
 @pytest.mark.timeout(10)
 def test_multilingual_content(monkeypatch):
