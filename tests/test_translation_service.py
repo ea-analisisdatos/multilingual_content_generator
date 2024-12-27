@@ -4,27 +4,28 @@
 import pytest
 from multilingual_content_generator.services.translation_service import translate_text
 
-# Prueba para el servicio de traducción
 def test_translate_text(monkeypatch):
     """
     Prueba unitaria para la función translate_text.
     Verifica que la función traduzca un texto correctamente.
-    
-    Asegura que los textos sean traducidos al idioma deseado correctamente.
     """
-
     # Mock de respuesta simulada del servicio de traducción
-    def mock_pipeline(*args, **kwargs):
-        def mock_call(text, **kwargs):
-            return [{"translation_text": "Este es un texto traducido de prueba."}]
-        return mock_call
-
-    # Aplicamos el mock al pipeline de transformers
-    monkeypatch.setattr("transformers.pipeline", mock_pipeline)
-
-    # Ejecutamos la función con un texto de prueba
-    text = "This is a test text."
-    result = translate_text(text, target_language="es")
-
-    # Verificamos que el resultado sea el texto traducido esperado
-    assert result == "Este es un texto traducido de prueba.", "La traducción no es correcta."
+    class MockPipeline:
+        def __call__(self, text, **kwargs):
+            # Devuelve una traducción simulada
+            return [{"translation_text": "Este es un texto de prueba."}]
+    
+    # Reemplazamos el pipeline de transformers con el mock
+    monkeypatch.setattr("transformers.pipeline", lambda *args, **kwargs: MockPipeline())
+    
+    # Texto de entrada para la prueba
+    input_text = "This is a test text."
+    
+    # Resultado esperado
+    expected_translation = "Este es un texto de prueba."
+    
+    # Llamada a la función con mock aplicado
+    result = translate_text(input_text, source_lang="en", target_lang="es")
+    
+    # Comprobación de igualdad exacta
+    assert result == expected_translation, f"Texto traducido inesperado: {result}"
