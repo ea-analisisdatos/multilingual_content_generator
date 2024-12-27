@@ -1,36 +1,37 @@
-# Archivo: services/dalle_generator.py
-
-# Importamos las bibliotecas necesarias
-from transformers import pipeline  # Para interactuar con modelos de Hugging Face
-from dotenv import load_dotenv  # Para cargar las variables de entorno desde un archivo .env
-import os  # Para manejar variables de entorno
+# Archivo: dalle_generator.py
+from transformers import pipeline
+from dotenv import load_dotenv
+import os
 
 # Cargar las variables de entorno desde el archivo .env
 load_dotenv()
 
-# Obtener el token de Hugging Face desde las variables de entorno
-token = os.getenv("HUGGINGFACE_TOKEN")
-
-if not token:
-    raise ValueError("El token de Hugging Face no está configurado o no se pudo cargar desde el archivo .env.")
+# Recuperar el token de autenticación de Hugging Face
+HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
+if not HUGGINGFACE_TOKEN:
+    raise ValueError("El token HUGGINGFACE_TOKEN no está configurado en el archivo .env.")
 
 def generate_dalle_image(prompt):
     """
-    Genera una imagen basada en texto usando un modelo DALL-E compatible.
+    Genera una imagen a partir de un texto utilizando el pipeline de Hugging Face.
+
     Args:
-        prompt (str): Descripción de la imagen que se desea generar.
+        prompt (str): Texto para generar la imagen.
+
     Returns:
-        str: URL de la imagen generada, o None si no se genera una imagen.
+        str: URL de la imagen generada.
     """
-    # Inicializamos el pipeline para el modelo "dalle-mega" con autenticación
-    dalle = pipeline("text-to-image", model="dalle-mega", use_auth_token=token)
+    # Configuración del pipeline para generación de imágenes
+    dalle = pipeline(
+        "text-to-image",
+        model="CompVis/stable-diffusion-v1-4",  # Cambiar al modelo válido
+        use_auth_token=HUGGINGFACE_TOKEN
+    )
 
-    # Generamos la imagen usando el prompt proporcionado
+    # Generar la imagen a partir del texto proporcionado
     result = dalle(prompt)
+    if not result or "images" not in result[0]:
+        raise RuntimeError("No se pudo generar la imagen.")
 
-    # Verificamos si el resultado contiene imágenes y retornamos la primera imagen generada
-    if result and "images" in result[0]:
-        return result[0]["images"][0]
-    
-    # Si no se genera ninguna imagen, retornamos None
-    return None
+    # Retornar la URL de la imagen generada
+    return result[0]["images"][0]
