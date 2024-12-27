@@ -33,44 +33,35 @@ Generador de Contenido Multilingüe
 
 El proyecto está organizado según las mejores prácticas en ingeniería de software, lo que facilita la escalabilidad y el mantenimiento. La estructura es la siguiente:
 
-
 ```
-# Generador de Contenido Multilingüe con Imágenes
-
-Este proyecto es una aplicación de Streamlit diseñada para generar contenido textual multilingüe y recuperar imágenes relacionadas utilizando la API de Pixabay. La aplicación permite a los usuarios seleccionar un tema, un idioma y un tono para generar contenido relevante junto con imágenes.
-
----
-
-## **Estructura del Proyecto**
-
-La estructura del proyecto sigue las mejores prácticas en ingeniería de software, con una clara separación de responsabilidades:
-
-```plaintext
-multilingual_content_generator/          # Carpeta raíz del proyecto
-├── app.py                               # Archivo principal para la aplicación Streamlit
-├── multilingual_content_generator/      # Código interno y módulos principales del proyecto
+multilingual_content_generator/
+├── app.py                               # Archivo principal que ejecuta la aplicación con Streamlit
+├── multilingual_content_generator/      # Código principal y módulos internos del proyecto
 │   ├── __init__.py                      # Inicializador del paquete principal
+│   ├── config.py                        # Configuración del proyecto (claves API, variables globales, etc.)
 │   ├── services/                        # Servicios principales del proyecto
 │   │   ├── __init__.py                  # Inicializador del módulo de servicios
-│   │   ├── content_generator.py         # Lógica para generación de contenido
-│   │   ├── image_retriever.py           # Lógica para recuperar imágenes desde la API de Pixabay
-│   │   └── translation_service.py       # Servicio opcional para traducción automática
+│   │   ├── content_generator.py         # Lógica para generar contenido textual multilingüe
+│   │   ├── image_retriever.py           # Funciones para recuperar imágenes desde APIs externas (Pixabay, Unsplash)
+│   │   ├── image_generator.py           # Funciones para generar imágenes con IA (Stable Diffusion, DALL-E)
+│   │   └── translation_service.py       # Servicio opcional para traducción automática de texto
 │   ├── utils/                           # Funciones auxiliares reutilizables
 │   │   ├── __init__.py                  # Inicializador del módulo de utilidades
-│   │   ├── formatters.py                # Funciones para formatear datos
-│   │   └── validators.py                # Validaciones de entrada y salida
+│   │   ├── formatters.py                # Funciones para formatear texto y datos
+│   │   └── validators.py                # Validaciones para entradas y salidas
 ├── tests/                               # Pruebas unitarias e integración
 │   ├── __init__.py                      # Inicializador del módulo de pruebas
 │   ├── test_content_generator.py        # Pruebas para el módulo content_generator.py
 │   ├── test_image_retriever.py          # Pruebas para el módulo image_retriever.py
 │   └── test_integration.py              # Pruebas de integración del proyecto
-├── multilingual_content_generator.ipynb # Cuaderno Jupyter para documentación o pruebas
-├── requirements.txt                     # Lista de dependencias necesarias para el proyecto
-├── .env                                 # Configuración sensible como claves API
-├── .env.example                         # Ejemplo de archivo .env
-├── .gitignore                           # Archivos y carpetas ignoradas por Git
+├── .env                                 # Archivo de configuración sensible (claves API, etc.)
+├── .env.example                         # Ejemplo de configuración del archivo .env
+├── .gitignore                           # Lista de archivos y carpetas ignorados por Git
+├── Dockerfile                           # Configuración para contenedores Docker (opcional)
 ├── LICENSE                              # Licencia del proyecto
+├── multilingual_content_generator.ipynb # Cuaderno Jupyter para pruebas o documentación (opcional)
 ├── README.md                            # Documentación principal del proyecto
+├── requirements.txt                     # Lista de dependencias necesarias para ejecutar el proyecto
 ├── setup.py                             # Archivo opcional para instalar el proyecto como paquete
 
 ```
