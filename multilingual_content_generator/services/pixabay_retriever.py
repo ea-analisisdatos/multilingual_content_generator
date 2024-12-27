@@ -1,8 +1,10 @@
-# Archivo: services/image_retriever.py
-import requests
-from multilingual_content_generator.config import Config
+# Archivo: services/pixabay_retriever.py
 
-def fetch_images(query, num_results=5):
+# Importamos las bibliotecas necesarias
+import requests  # Para realizar solicitudes HTTP
+from multilingual_content_generator.config import Config  # Configuración del proyecto
+
+def fetch_pixabay_images(query, num_results=5):
     """
     Busca imágenes en Pixabay.
     Args:
