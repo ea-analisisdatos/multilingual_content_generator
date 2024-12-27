@@ -66,6 +66,17 @@ multilingual_content_generator/
 
 ```
 
+### Diferencias Clave
+```
+| Aspecto              | `image_retriever.py`                      | `image_generator.py`                    |
+|-----------------------|-------------------------------------------|-----------------------------------------|
+| **Funcionalidad**     | Recupera imágenes existentes.             | Genera imágenes nuevas desde cero.      |
+| **Fuente de Imágenes**| APIs de terceros (Pixabay, Unsplash).     | Modelos de IA (Stable Diffusion, DALL-E). |
+| **Entrada**           | Palabras clave para búsqueda.             | Texto descriptivo para generación.      |
+| **Salida**            | URLs de imágenes existentes.              | Una imagen generada como objeto.        |
+| **Dependencias**      | `requests` y configuración de API Keys.   | Bibliotecas de IA como `diffusers`.     |
+
+```
 
 ## **Cómo Ejecutar el Proyecto**
 
