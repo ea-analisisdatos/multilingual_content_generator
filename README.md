@@ -8,7 +8,6 @@
 -   Integrar imágenes relevantes usando APIs gratuitas.
 -   Implementar una interfaz gráfica para facilitar la interacción.
 
-In [ ]:
 
 ## **Tecnologías a Utilizar**
 
