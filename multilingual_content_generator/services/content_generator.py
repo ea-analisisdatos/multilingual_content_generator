@@ -2,8 +2,9 @@ from transformers import pipeline
 from multilingual_content_generator.config import Config
 
 def generate_content(prompt, model_name=Config.DEFAULT_MODEL, max_length=Config.MAX_LENGTH):
-    """
-    Genera contenido textual utilizando un modelo preentrenado.
+    """ 
+    Genera contenido textual en múltiples idiomas usando modelos pre-entrenados como GPT-3 o Falcon.
+    Opciones personalizables: tono, longitud, y formato.      
 
     Args:
         prompt (str): Texto inicial que guía la generación del modelo.
