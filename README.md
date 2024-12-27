@@ -1,4 +1,4 @@
-﻿# multilingual_content_generator
+﻿# Multilingual Content Generator
  Generador de Contenido Multilingüe
 
 ## **Objetivos del Proyecto**
