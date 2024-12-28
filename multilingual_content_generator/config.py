@@ -1,3 +1,12 @@
+# config.py
+
+import sys
+from pathlib import Path
+
+# Añadir la ruta del proyecto al path
+sys.path.append(str(Path(__file__).resolve().parent))
+
+
 import os
 from dotenv import load_dotenv
 
@@ -10,8 +19,14 @@ class Config:
     Nota: Si alguna clave no está presente en .env, la aplicación 
     usará el valor por defecto especificado en el código.
     """
-    # Clave de la API de Pixabay (recuperada desde las variables de entorno)
-    PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY", "tu_clave_pixabay")
+    # Claves recuperadas desde las variables de entorno
+    
+    # Acceder a las variables
+    PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY")
+    UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
+    HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
+    PYTHONPATH = os.getenv("PYTHONPATH")
+
     # Modelo predeterminado para generación de contenido
     DEFAULT_MODEL = "EleutherAI/gpt-neo-1.3B"
     # Idiomas soportados para la generación de contenido

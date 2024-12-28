@@ -6,6 +6,7 @@ from multilingual_content_generator.services.pixabay_retriever import fetch_pixa
 from multilingual_content_generator.services.unsplash_retriever import fetch_unsplash_images  # Para buscar imágenes en Unsplash
 from multilingual_content_generator.services.dalle_generator import generate_dalle_image  # Para generar imágenes con DALL-E
 from multilingual_content_generator.services.stable_diffusion import generate_stable_diffusion_image  # Para generar imágenes con Stable Diffusion
+from multilingual_content_generator.config import Config  # Configuración del proyecto
 
 # Configuración de la aplicación
 st.title("Generador de Contenido Multilingüe con Imágenes")

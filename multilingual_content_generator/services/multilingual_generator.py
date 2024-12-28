@@ -1,6 +1,7 @@
 # Archivo: multilingual_content_generator/services/multilingual_generation.py
 
 from transformers import pipeline
+from multilingual_content_generator.config import Config
 
 
 def generate_and_translate(prompt, source_lang="en", target_lang="es", max_length=50):

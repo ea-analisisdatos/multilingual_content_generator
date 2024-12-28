@@ -2,6 +2,7 @@
 
 # Importamos las bibliotecas necesarias
 from transformers import pipeline  # Para trabajar con modelos de traducción
+from multilingual_content_generator.config import Config
 
 # Verificamos si el paquete sentencepiece está instalado
 try:
