@@ -1,10 +1,8 @@
 # Archivo: multilingual_content_generator/services/unsplash_retriever.py
-# Servicio para interactuar con la API de Unsplash.
 
 import requests  # Para realizar solicitudes HTTP
 from multilingual_content_generator.utils.api_limits import get_limit  # Obtener límites de API
 from multilingual_content_generator.config import Config  # Configuración del proyecto
-
 
 def fetch_unsplash_images(query, num_results=5):
     """
@@ -23,8 +21,10 @@ def fetch_unsplash_images(query, num_results=5):
     """
     try:
         # Validar el límite de solicitudes de la API
-        limit = get_limit("unsplash")["requests_per_hour"]
-        if num_results > limit:
+        limit = get_limit("unsplash").get("requests_per_hour", 0)
+        print(f"Límite obtenido: {limit}, Número solicitado: {num_results}")  # Depuración
+        
+        if limit > 0 and num_results > limit:
             raise ValueError(f"El límite de solicitudes por hora es {limit}.")
 
         # Construir la solicitud a Unsplash
@@ -41,6 +41,9 @@ def fetch_unsplash_images(query, num_results=5):
 
     except requests.HTTPError as http_err:
         raise requests.HTTPError(f"Error en la solicitud a Unsplash: {http_err}")
+
+    except KeyError as key_err:
+        raise ValueError(f"Respuesta inesperada de la API: falta la clave {key_err}")
 
     except Exception as e:
         raise ValueError(f"Error inesperado al recuperar imágenes de Unsplash: {e}")
