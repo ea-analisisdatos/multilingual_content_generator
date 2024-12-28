@@ -1,4 +1,4 @@
-# Archivo: multilingual_content_generator/services/multilingual_generation.py
+# Archivo: multilingual_content_generator/services/multilingual_generator.py
 
 from transformers import pipeline
 from multilingual_content_generator.config import Config
@@ -16,15 +16,29 @@ def generate_and_translate(prompt, source_lang="en", target_lang="es", max_lengt
 
     Returns:
         str: Texto traducido.
+
+    Raises:
+        ValueError: Si alguna entrada es inválida.
+        Exception: Para errores en los pipelines.
     """
-    # Pipeline para generación de contenido
-    generator = pipeline("text-generation", model="gpt2")
-    generated = generator(prompt, max_length=max_length, num_return_sequences=1)
-    generated_text = generated[0]["generated_text"]
+    # Validar entradas
+    if not prompt:
+        raise ValueError("El prompt no puede estar vacío.")
+    if not source_lang or not target_lang:
+        raise ValueError("Los idiomas no pueden estar vacíos.")
 
-    # Pipeline para traducción
-    translator = pipeline("translation", model=f"Helsinki-NLP/opus-mt-{source_lang}-{target_lang}")
-    translated = translator(generated_text)
-    translated_text = translated[0]["translation_text"]
+    try:
+        # Pipeline para generación de contenido
+        generator = pipeline("text-generation", model="gpt2")
+        generated = generator(prompt, max_length=max_length, num_return_sequences=1)
+        generated_text = generated[0]["generated_text"]
 
-    return translated_text
+        # Pipeline para traducción
+        translator = pipeline("translation", model=f"Helsinki-NLP/opus-mt-{source_lang}-{target_lang}")
+        translated = translator(generated_text)
+        translated_text = translated[0]["translation_text"]
+
+        return translated_text
+
+    except Exception as e:
+        raise Exception(f"Error en la generación o traducción de contenido: {e}")

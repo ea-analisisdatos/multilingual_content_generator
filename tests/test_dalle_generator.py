@@ -1,38 +1,38 @@
-# tests/test_dalle_generator.py
-
-import sys
-import os
-
-# Agregar el directorio 'multilingual_content_generator/services' al path
-sys.path.append(os.path.join(os.path.dirname(__file__), "../multilingual_content_generator/services"))
-
-from dalle_generator import generate_dalle_image
+# Archivo: tests/test_dalle_generator.py
 import pytest
+from multilingual_content_generator.services.dalle_generator import generate_dalle_image
 
 def test_generate_dalle_image(monkeypatch):
     """
-    Prueba unitaria para la función generate_dalle_image del archivo dalle_generator.py.
-    Verifica que el pipeline de Hugging Face se llame correctamente con un mock.
+    Prueba unitaria para la función generate_dalle_image.
+    Verifica que Stable Diffusion genere una imagen correctamente.
     """
 
-    # Mock para reemplazar el pipeline de transformers
-    def mock_pipeline(task, model=None, use_auth_token=None):
-        # Asegurarse de que el token de autenticación esté presente
-        assert use_auth_token is not None, "El token de autenticación no fue proporcionado."
+    # Mock para reemplazar el pipeline de Stable Diffusion
+    def mock_pipeline(*args, **kwargs):
+        class MockPipeline:
+            def to(self, device):
+                pass  # Simula mover el pipeline a un dispositivo (CPU/GPU)
 
-        class MockDallePipeline:
             def __call__(self, prompt, *args, **kwargs):
-                # Simula la respuesta de la API de Hugging Face
-                return [{"images": ["https://mocked.image.url"]}]
+                class MockImage:
+                    def save(self, path):
+                        assert path == "/tmp/generated_image.png"  # Verificar ruta de guardado
 
-        return MockDallePipeline()
+                return MockPipelineOutput([MockImage()])
 
-    # Aplicar el mock al pipeline
-    monkeypatch.setattr("transformers.pipeline", mock_pipeline)
+        class MockPipelineOutput:
+            def __init__(self, images):
+                self.images = images
 
-    # Texto de prueba para generar una imagen
+        return MockPipeline()
+
+    # Aplicar el mock al método StableDiffusionPipeline
+    monkeypatch.setattr("diffusers.StableDiffusionPipeline.from_pretrained", mock_pipeline)
+
+    # Ejecutar la función con un prompt de prueba
     prompt = "Un robot programando en un portátil"
-
-    # Ejecutar la función y verificar el resultado
     result = generate_dalle_image(prompt)
-    assert result == "https://mocked.image.url", "La URL de la imagen generada no coincide con el mock."
+
+    # Verificar que la ruta generada es válida
+    assert result == "/tmp/generated_image.png", "La ruta de la imagen generada no es la esperada."

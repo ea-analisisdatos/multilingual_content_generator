@@ -2,10 +2,12 @@
 
 import pytest
 from multilingual_content_generator.services.dalle_generator import generate_dalle_image
-from multilingual_content_generator.services.stable_diffusion import generate_stable_diffusion_image
+from multilingual_content_generator.services.stable_diffusion_service import generate_stable_diffusion_image
 from multilingual_content_generator.services.pixabay_retriever import fetch_pixabay_images
 from multilingual_content_generator.services.unsplash_retriever import fetch_unsplash_images  # Usamos el nombre correcto
 from multilingual_content_generator.services.content_generator import generate_content  # Se actualizó el nombre
+from multilingual_content_generator.utils.api_limits import get_limit
+
 
 # Prueba de integración para la generación de contenido textual y visual
 def test_integration_flow(monkeypatch):
@@ -39,7 +41,7 @@ def test_integration_flow(monkeypatch):
     # Aplicar los mocks
     monkeypatch.setattr("multilingual_content_generator.services.content_generator.generate_content", mock_generate_content)
     monkeypatch.setattr("multilingual_content_generator.services.dalle_generator.generate_dalle_image", mock_generate_dalle_image)
-    monkeypatch.setattr("multilingual_content_generator.services.stable_diffusion.generate_stable_diffusion_image", mock_generate_stable_diffusion_image)
+    monkeypatch.setattr("multilingual_content_generator.services.stable_diffusion_service.generate_stable_diffusion_image", mock_generate_stable_diffusion_image)
     monkeypatch.setattr("multilingual_content_generator.services.pixabay_retriever.fetch_pixabay_images", mock_fetch_pixabay_images)
     monkeypatch.setattr("multilingual_content_generator.services.unsplash_retriever.fetch_unsplash_images", mock_fetch_unsplash_images)
 

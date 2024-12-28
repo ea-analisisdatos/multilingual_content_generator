@@ -1,17 +1,15 @@
 # Archivo: tests/test_pixabay_retriever.py
 
-# Importamos las bibliotecas necesarias
 import pytest
+import requests  # Asegúrate de importar requests
 from multilingual_content_generator.services.pixabay_retriever import fetch_pixabay_images
 
-# Prueba para verificar la recuperación de imágenes desde Pixabay
-def test_fetch_pixabay_images(monkeypatch):
+def test_fetch_pixabay_images_success(monkeypatch):
     """
     Prueba unitaria para la función fetch_pixabay_images.
-    Verifica que la función devuelva una lista de URLs cuando se proporciona un término de búsqueda.
+    Verifica que la función devuelve una lista de URLs en caso de éxito.
     """
-    # Mock de respuesta simulada de la API de Pixabay
-    def mock_requests_get(url, params=None):
+    def mock_requests_get(url):
         class MockResponse:
             def json(self):
                 return {
@@ -20,21 +18,48 @@ def test_fetch_pixabay_images(monkeypatch):
                         {"webformatURL": "https://pixabay.com/image2.jpg"}
                     ]
                 }
-
             def raise_for_status(self):
-                pass  # Simula una respuesta HTTP exitosa
+                pass  # Simula respuesta HTTP exitosa
 
         return MockResponse()
 
-    # Aplicamos el mock al método requests.get
     monkeypatch.setattr("requests.get", mock_requests_get)
 
-    # Ejecutamos la función con un término de búsqueda de prueba
-    term = "paisaje"
-    result = fetch_pixabay_images(term, num_results=2)
+    images = fetch_pixabay_images("flowers", 2)
+    assert len(images) == 2
+    assert images == ["https://pixabay.com/image1.jpg", "https://pixabay.com/image2.jpg"]
 
-    # Verificamos que el resultado sea una lista con URLs de imágenes
-    assert result == [
-        "https://pixabay.com/image1.jpg",
-        "https://pixabay.com/image2.jpg"
-    ], "La función no devolvió las URLs esperadas."
+def test_fetch_pixabay_images_error(monkeypatch):
+    """
+    Prueba unitaria para manejar errores en fetch_pixabay_images.
+    Verifica que la función maneje excepciones correctamente.
+    """
+    def mock_requests_get(url):
+        class MockResponse:
+            def raise_for_status(self):
+                raise requests.exceptions.HTTPError("Error HTTP simulado.")  # Ahora funciona correctamente
+
+        return MockResponse()
+
+    monkeypatch.setattr("requests.get", mock_requests_get)
+
+    with pytest.raises(ValueError, match="Error al conectarse con la API de Pixabay"):
+        fetch_pixabay_images("flowers", 2)
+
+def test_fetch_pixabay_images_empty(monkeypatch):
+    """
+    Prueba unitaria para manejar respuestas vacías de la API de Pixabay.
+    """
+    def mock_requests_get(url):
+        class MockResponse:
+            def json(self):
+                return {"hits": []}
+            def raise_for_status(self):
+                pass  # Simula respuesta HTTP exitosa
+
+        return MockResponse()
+
+    monkeypatch.setattr("requests.get", mock_requests_get)
+
+    images = fetch_pixabay_images("flowers", 2)
+    assert images == []  # Lista vacía si no hay resultados
